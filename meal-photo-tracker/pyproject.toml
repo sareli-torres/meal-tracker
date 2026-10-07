@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mealtrack"
+version = "0.1.0"
+description = "Photo-to-macros meal logging with honest uncertainty ranges, a daily summary and an agent-friendly CLI."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Sareli Torres" }]
+dependencies = [
+    "anthropic>=0.40",
+    "Pillow>=10",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+app = ["streamlit>=1.52"]
+dev = ["pytest>=8"]
+
+[project.scripts]
+mealtrack = "mealtrack.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
