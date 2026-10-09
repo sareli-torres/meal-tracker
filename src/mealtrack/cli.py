@@ -187,8 +187,13 @@ def cmd_delete_meal(args: argparse.Namespace) -> int:
 def cmd_demo_data(args: argparse.Namespace) -> int:
     path = args.db or config.db_path("mock")
     with Store(path) as store:
-        seed_demo(store, days=args.days)
-    _emit(args, {"db": str(path), "days": args.days}, f"seeded {args.days} days of synthetic data into {path}")
+        added = seed_demo(store, days=args.days)
+    text = (
+        f"seeded {added} days of synthetic data into {path}"
+        if added
+        else f"{path} already has demo data for these days, nothing added"
+    )
+    _emit(args, {"db": str(path), "days": args.days, "days_added": added}, text)
     return EXIT_OK
 
 

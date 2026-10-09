@@ -20,6 +20,16 @@ def test_demo_data_is_deterministic_and_has_one_empty_day():
     assert a["days_with_meals_logged"] == 13
 
 
+def test_seeding_twice_does_not_duplicate_the_demo_data():
+    with Store(":memory:") as s:
+        first = seed_demo(s, days=14, end_day="2026-10-14", seed=7)
+        before = summarize_range(s, "2026-10-14", 14, 2000, 2000).to_dict()
+        second = seed_demo(s, days=14, end_day="2026-10-14", seed=7)
+        after = summarize_range(s, "2026-10-14", 14, 2000, 2000).to_dict()
+    assert first == 13 and second == 0
+    assert before == after
+
+
 @pytest.fixture
 def app_env(tmp_path, monkeypatch):
     monkeypatch.setenv("MEALTRACK_HOME", str(tmp_path / ".mt"))
