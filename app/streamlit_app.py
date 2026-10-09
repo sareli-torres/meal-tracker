@@ -47,8 +47,8 @@ with st.sidebar:
         st.info("Demo mode: fake estimates, stored in a separate demo database.")
         if st.button("Fill with synthetic demo data"):
             with Store(config.db_path("mock")) as store:
-                seed_demo(store, days=14)
-            st.success("Demo data added.")
+                added = seed_demo(store, days=14)
+            st.success("Demo data added." if added else "Demo data is already there.")
     elif not os.getenv("ANTHROPIC_API_KEY"):
         st.warning("ANTHROPIC_API_KEY is not set. Add it to a .env file or switch to mock.")
 
